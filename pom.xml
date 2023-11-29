@@ -111,6 +111,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>trtmail-rest</finalName>
+		<finalName>trtlmail-rest</finalName>
 	</build>
 </project>

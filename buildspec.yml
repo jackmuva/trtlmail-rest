@@ -6,7 +6,7 @@ phases:
       - mvn clean package
   post_build:
     commands:
-      - echo build complete.
+      - echo Build complete.
 artifacts:
   files:
     - target/trtlmail-rest.jar
