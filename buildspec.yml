@@ -1,0 +1,14 @@
+version: 0.2
+phases:
+  build:
+    commands:
+      - echo Packaging JAR file...
+      - mvn clean package
+  post_build:
+    commands:
+      - echo build complete.
+artifacts:
+  files:
+    - target/trtlmail-rest.jar
+  discard-paths: yes
+
