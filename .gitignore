@@ -33,3 +33,4 @@ build/
 .vscode/
 
 *.p12
+.env
