@@ -19,4 +19,6 @@ public interface EntryRepository extends JpaRepository<Entry, Long> {
     void deleteByEntryId(Long id);
     List<Entry> findAllBySeriesId(Long seriesId);
     List<Entry> findByEntryId(Long id);
+
+    Entry findBySeriesIdAndOrderNum(Long seriesId, Long orderNum);
 }

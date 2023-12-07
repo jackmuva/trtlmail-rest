@@ -10,4 +10,6 @@ public interface EntryService {
     void deleteEntry(Long id);
     List<Entry> fetchEntriesBySeriesId(Long id);
     List<Entry> fetchEntriesByEntryId(Long id);
+
+    Entry fetchFirstEntryBySeriesId(Long id);
 }

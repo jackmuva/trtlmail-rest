@@ -54,7 +54,7 @@ public class SeriesController {
     @GetMapping("/getNewest")
     public List<Series> getNewestSeries(@RequestParam(defaultValue = "0") int page){
         try{
-            Pageable paging = PageRequest.of(page, 1);
+            Pageable paging = PageRequest.of(page, 10);
             Page<Series> pageSeries = seriesService.fetchNewest(paging);
             return pageSeries.getContent();
         } catch (Exception e){

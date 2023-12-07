@@ -17,8 +17,8 @@ import java.util.Collections;
 @RequestMapping("api")
 public class EditorJsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(EditorJsController.class);
-    private static final String S3UPLOADURL = "C://Users/jackm/Documents/slowcapsules/s3/";
-    private static final String S3DOWNLOADURL = "http://127.0.0.1:8081/";
+    private static final String S3UPLOADURL = "C://Users/jackm/Documents/trtlmail/s3/";
+    private static final String S3DOWNLOADURL = "http://127.0.0.1:5000/";
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/image/save", consumes = { "multipart/form-data" })

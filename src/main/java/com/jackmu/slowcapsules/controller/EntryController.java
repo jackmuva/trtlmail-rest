@@ -53,4 +53,9 @@ public class EntryController {
         return entryService.fetchEntriesBySeriesId(id);
     }
 
+    @GetMapping("/getFirstBySeries/{id}")
+    public Entry getFirstBySeriesId(@PathVariable Long id){
+        return entryService.fetchFirstEntryBySeriesId(id);
+    }
+
 }
