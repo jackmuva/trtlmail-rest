@@ -16,7 +16,7 @@ import java.util.Collections;
 @Profile("local")
 public class LocalImageService implements ImageService{
     private static final String S3UPLOADURL = "C://Users/jackm/Documents/trtlmail/s3/";
-    private static final String S3DOWNLOADURL = "http://127.0.0.1:5000/";
+    private static final String S3DOWNLOADURL = "http://127.0.0.1:8081/";
     private static final Logger LOGGER = LoggerFactory.getLogger(EditorJsController.class);
     @Override
     public void uploadImage(UploadedImage image) {
