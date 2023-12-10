@@ -3,8 +3,10 @@ package com.jackmu.slowcapsules.controller;
 import com.jackmu.slowcapsules.model.editorjs.DownloadedImage;
 import com.jackmu.slowcapsules.model.editorjs.UploadedImage;
 import com.jackmu.slowcapsules.model.editorjs.UrlLink;
+import com.jackmu.slowcapsules.service.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,17 +18,14 @@ import java.util.Collections;
 @RestController
 @RequestMapping("api")
 public class EditorJsController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EditorJsController.class);
-    private static final String S3UPLOADURL = "C://Users/jackm/Documents/trtlmail/s3/";
-    private static final String S3DOWNLOADURL = "http://127.0.0.1:5000/";
+    @Autowired
+    ImageService imageService;
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/image/save", consumes = { "multipart/form-data" })
-    public ResponseEntity<DownloadedImage> postImage(@ModelAttribute UploadedImage image) throws Exception{
-        image.getImage().transferTo(new File(S3UPLOADURL + image.getImage().getOriginalFilename()));
-
-        DownloadedImage downloadedImage = new DownloadedImage(1, Collections.singletonMap("url",
-                        S3DOWNLOADURL + image.getImage().getOriginalFilename()));
+    public ResponseEntity<DownloadedImage> postImage(@ModelAttribute UploadedImage image) {
+        imageService.uploadImage(image);
+        DownloadedImage downloadedImage = imageService.downloadImage(image.getImage().getOriginalFilename());
         return new ResponseEntity<>(downloadedImage, HttpStatus.OK);
     }
 
