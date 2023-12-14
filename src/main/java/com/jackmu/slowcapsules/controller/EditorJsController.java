@@ -24,8 +24,8 @@ public class EditorJsController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/image/save", consumes = { "multipart/form-data" })
     public ResponseEntity<DownloadedImage> postImage(@ModelAttribute UploadedImage image) {
-        imageService.uploadImage(image);
-        DownloadedImage downloadedImage = imageService.downloadImage(image.getImage().getOriginalFilename());
+        String filename = imageService.uploadImage(image);
+        DownloadedImage downloadedImage = imageService.downloadImage(filename);
         return new ResponseEntity<>(downloadedImage, HttpStatus.OK);
     }
 

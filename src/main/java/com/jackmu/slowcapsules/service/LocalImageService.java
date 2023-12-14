@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 
 @Service
 @Profile("local")
@@ -19,20 +21,26 @@ public class LocalImageService implements ImageService{
     private static final String S3DOWNLOADURL = "http://127.0.0.1:8081/";
     private static final Logger LOGGER = LoggerFactory.getLogger(EditorJsController.class);
     @Override
-    public void uploadImage(UploadedImage image) {
-        LOGGER.info("I'm here");
+    public String uploadImage(UploadedImage image) {
+        String filename = generateFileName(image.getImage());
         try {
-            image.getImage().transferTo(new File(S3UPLOADURL + image.getImage().getOriginalFilename()));
+            image.getImage().transferTo(new File(S3UPLOADURL + filename));
+            return filename;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOGGER.info(e.getMessage());
+            return null;
         }
     }
 
     @Override
     public DownloadedImage downloadImage(String filename) {
-        LOGGER.info("i'm here");
         DownloadedImage downloadedImage = new DownloadedImage(1, Collections.singletonMap("url",
                 S3DOWNLOADURL + filename));
         return downloadedImage;
+    }
+
+    @Override
+    public String generateFileName(MultipartFile multiPart) {
+        return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
     }
 }

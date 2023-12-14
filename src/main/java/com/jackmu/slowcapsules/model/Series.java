@@ -48,4 +48,10 @@ public class Series {
 
     @Column(name = "published")
     private Boolean published;
+
+    @Column(name = "num_all_time_readers")
+    private Integer numAllTimeReaders;
+
+    @Column(name = "numCurrentReaders")
+    private Integer numCurrentReaders;
 }
