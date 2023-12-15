@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Date;
 
 @Service
-@Profile("!local")
+@Profile("!local-profile")
 public class S3ImageService implements ImageService{
     @Autowired
     AmazonS3 amazonS3;

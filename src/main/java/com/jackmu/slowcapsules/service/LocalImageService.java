@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 
 @Service
-@Profile("local")
+@Profile("local-profile")
 public class LocalImageService implements ImageService{
     private static final String S3UPLOADURL = "C://Users/jackm/Documents/trtlmail/s3/";
     private static final String S3DOWNLOADURL = "http://127.0.0.1:8081/";

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Profile;
 import java.util.Map;
 
 @Configuration
-@Profile("!local")
+@Profile("!local-profile")
 public class AwsS3Config {
     final Map<String, String> env = System.getenv();
     public AWSCredentials credentials() {
