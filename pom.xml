@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.jackmu</groupId>
-	<artifactId>slowcapsules</artifactId>
+	<artifactId>trtlmail-rest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>slowcapsules</name>
-	<description>Demo project for Spring Boot</description>
+	<name>trtlmail-rest</name>
+	<description>REST Backend for trtlmail site</description>
 	<properties>
 		<java.version>17</java.version>
 		<tests.skip>true</tests.skip>
