@@ -36,8 +36,6 @@ public class AuthController {
 
     @PostMapping(value = {"/register", "/signup"})
     public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO) throws Exception{
-        String response = authService.register(registerDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return authService.register(registerDTO);
     }
 }

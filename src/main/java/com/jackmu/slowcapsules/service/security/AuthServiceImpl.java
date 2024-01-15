@@ -8,8 +8,10 @@ import com.jackmu.slowcapsules.model.security.Role;
 import com.jackmu.slowcapsules.model.security.User;
 import com.jackmu.slowcapsules.repository.security.RoleRepository;
 import com.jackmu.slowcapsules.repository.security.UserRepository;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,13 +55,18 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public String register(RegisterDTO registerDTO) throws Exception{
+    public ResponseEntity<String> register(RegisterDTO registerDTO){
+        JSONObject resp = new JSONObject();
         if(userRepository.existsByEmail(registerDTO.getEmail())){
-            throw new SlowCapsuleAPIException(HttpStatus.BAD_REQUEST, "email already exists");
+            resp.put("status", 400);
+            resp.put("body", "Email already exists");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
         }
 
         if(userRepository.existsByUsername(registerDTO.getUsername())){
-            throw new SlowCapsuleAPIException(HttpStatus.BAD_REQUEST, "username already exists");
+            resp.put("status", 400);
+            resp.put("body", "Username already exists");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
         }
 
         User user = new User();
@@ -74,7 +81,9 @@ public class AuthServiceImpl implements AuthService{
 
         userRepository.save(user);
 
-        return "User registerd successfully";
+        resp.put("status", 201);
+        resp.put("body", "User registered successfully");
+        return new ResponseEntity<>(resp.toString(), HttpStatus.CREATED);
 
     }
 
