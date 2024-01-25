@@ -22,3 +22,4 @@ API's responsible for handling REST processes for trtlmail-web
 6) In Route 53, use an A record to direct domain to our Load Balancer
 7) Request a certificate in Certificate Manager
 8) In our Load Balancer, go back to the Listeners tab and add port 443 HTTPS with our cert as the default certificate
+9) Setup RDS if not done already, import env variable file in private S3
