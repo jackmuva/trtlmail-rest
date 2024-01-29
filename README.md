@@ -1,6 +1,10 @@
 ## Trtlmail-rest
 API's responsible for handling REST processes for trtlmail-web
 
+### To run locally:
+1) Ensure that `local profile` is enabled
+2) Run the command `http-server ./` in local S3 directory
+
 ### To run docker:
 1) Run `mvn clean package`
 2) Run `docker build -t trtlmail-rest:latest .`
