@@ -17,6 +17,10 @@ public interface EntryRepository extends JpaRepository<Entry, Long> {
     @Modifying
     @Transactional
     void deleteByEntryId(Long id);
+
+    @Modifying
+    @Transactional
+    void deleteBySeriesId(Long id);
     List<Entry> findAllBySeriesId(Long seriesId);
     List<Entry> findByEntryId(Long id);
 

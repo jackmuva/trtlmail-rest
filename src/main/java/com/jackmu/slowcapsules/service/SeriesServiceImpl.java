@@ -1,6 +1,7 @@
 package com.jackmu.slowcapsules.service;
 
 import com.jackmu.slowcapsules.model.Series;
+import com.jackmu.slowcapsules.repository.EntryRepository;
 import com.jackmu.slowcapsules.repository.SeriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,12 +15,16 @@ public class SeriesServiceImpl implements SeriesService{
     @Autowired
     private SeriesRepository seriesRepository;
 
+    @Autowired
+    private EntryRepository entryRepository;
+
     public Series saveSeries(Series series){
         return seriesRepository.save(series);
     }
 
     public void deleteSeries(Long id){
         seriesRepository.deleteById(id);
+        entryRepository.deleteBySeriesId(id);
     }
 
     public Page<Series> fetchNewest(Pageable pageable){
