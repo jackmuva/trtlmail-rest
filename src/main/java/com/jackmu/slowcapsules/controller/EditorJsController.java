@@ -4,6 +4,7 @@ import com.jackmu.slowcapsules.model.editorjs.DownloadedImage;
 import com.jackmu.slowcapsules.model.editorjs.UploadedImage;
 import com.jackmu.slowcapsules.model.editorjs.UrlLink;
 import com.jackmu.slowcapsules.service.ImageService;
+import com.jackmu.slowcapsules.service.S3ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.Collections;
 public class EditorJsController {
     @Autowired
     ImageService imageService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditorJsController.class);
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/image/save", consumes = { "multipart/form-data" })

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UploadedImage {
+    private Long entryId;
     private MultipartFile image;
 
 }

@@ -4,7 +4,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.jackmu.slowcapsules.model.editorjs.DownloadedImage;
+import com.jackmu.slowcapsules.model.editorjs.ImageLookup;
 import com.jackmu.slowcapsules.model.editorjs.UploadedImage;
+import com.jackmu.slowcapsules.repository.ImageLookupRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,10 @@ import java.util.Date;
 public class S3ImageService implements ImageService{
     @Autowired
     AmazonS3 amazonS3;
+
+    @Autowired
+    ImageLookupRepository imageLookupRepository;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(S3ImageService.class);
     private static final String S3_BUCKET_NAME = "trtlmail-images";
     private static final String S3_DOWNLOAD_URL = "https://trtlmail-images.s3.amazonaws.com/";
@@ -53,6 +59,7 @@ public class S3ImageService implements ImageService{
             PutObjectRequest putObjectRequest = new PutObjectRequest(S3_BUCKET_NAME, filename, imageFile)
                     .withCannedAcl(CannedAccessControlList.PublicRead);
             amazonS3.putObject(putObjectRequest);
+            mapImage(filename, image.getEntryId());
             return filename;
         } catch(Exception e){
             LOGGER.info(e.getMessage());
@@ -60,10 +67,19 @@ public class S3ImageService implements ImageService{
         }
     }
 
+    public void mapImage(String filename, Long entryId){
+        ImageLookup image = new ImageLookup(filename, entryId);
+        imageLookupRepository.save(image);
+    }
+
     @Override
     public DownloadedImage downloadImage(String filename) {
         DownloadedImage downloadedImage = new DownloadedImage(1, Collections.singletonMap("url",
                 S3_DOWNLOAD_URL + filename));
         return downloadedImage;
+    }
+
+    @Override
+    public void deleteImage(String filename) {
     }
 }
