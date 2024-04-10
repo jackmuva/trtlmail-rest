@@ -3,6 +3,7 @@ package com.jackmu.slowcapsules.service;
 import com.jackmu.slowcapsules.jwt.JwtTokenProvider;
 import com.jackmu.slowcapsules.model.Entry;
 import com.jackmu.slowcapsules.repository.EntryRepository;
+import com.jackmu.slowcapsules.repository.ImageLookupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ import java.util.logging.Logger;
 public class EntryServiceImpl implements EntryService{
     @Autowired
     private EntryRepository entryRepository;
+
+    @Autowired
+    private ImageService imageService;
 
     public Entry saveEntry(Entry entry){
         return entryRepository.save(entry);
@@ -29,6 +33,7 @@ public class EntryServiceImpl implements EntryService{
 
     public void deleteEntry(Long id){
         Entry entry = entryRepository.findByEntryId(id).get(0);
+        imageService.deleteImagesInEntry(id);
         moveUpOtherEntryOrders(entry);
         entryRepository.deleteByEntryId(id);
     }
