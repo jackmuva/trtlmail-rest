@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -47,7 +48,25 @@ public class LocalImageService implements ImageService{
 
     @Override
     public void deleteImage(String filename) {
+        File file = new File(S3UPLOADURL + filename);
+        try{
+            file.delete();
+            imageLookupRepository.deleteByImageFilename(filename);
+        } catch(Exception e){
+            LOGGER.info(e.getMessage());
+        }
+    }
 
+    @Override
+    public void deleteImagesInEntry(Long entryId) {
+        for(ImageLookup imageLookup : imageLookupRepository.findAllByEntryId(entryId)){
+            try {
+                String filename = imageLookup.getImageFilename();
+                deleteImage(filename);
+            } catch(Exception e){
+                LOGGER.error(e.getMessage());
+            }
+        }
     }
 
     public void mapImage(String filename, Long entryId){
