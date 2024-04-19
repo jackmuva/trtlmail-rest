@@ -31,7 +31,7 @@ public class Series {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "summary")
+    @Column(name = "summary", columnDefinition="TEXT")
     private String summary;
 
     @Column(name = "tags")
