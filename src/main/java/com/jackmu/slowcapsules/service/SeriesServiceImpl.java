@@ -39,8 +39,8 @@ public class SeriesServiceImpl implements SeriesService{
         return seriesRepository.findByPublishedIsTrueOrderByDatetimeDesc(pageable);
     }
 
-    public List<Series> fetchByWriter(String penName){
-        return seriesRepository.findByPenNameIgnoreCase(penName);
+    public Page<Series> fetchByWriter(Pageable pageable, String penName){
+        return seriesRepository.findByPenNameIgnoreCase(pageable, penName);
     }
 
     public List<Series> fetchByTag(String tag){

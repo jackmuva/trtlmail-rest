@@ -13,7 +13,7 @@ public interface SeriesService {
 
     Page<Series> fetchNewest(Pageable pageable);
 
-    List<Series> fetchByWriter(String writer);
+    Page<Series> fetchByWriter(Pageable pageable, String writer);
 
     List<Series> fetchByTag(String tag);
 

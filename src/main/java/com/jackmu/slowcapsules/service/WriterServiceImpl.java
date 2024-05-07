@@ -20,8 +20,8 @@ public class WriterServiceImpl implements WriterService{
         writerRepository.deleteById(id);
     }
 
-    public List<Writer> fetchWriterByPenName(String penName){
-        return writerRepository.findAllByPenName(penName);
+    public Writer fetchWriterByPenName(String penName){
+        return writerRepository.findByPenName(penName);
     }
     public List<Writer> fetchWriterByWriterId(Long id) {
         return writerRepository.findAllByWriterId(id);

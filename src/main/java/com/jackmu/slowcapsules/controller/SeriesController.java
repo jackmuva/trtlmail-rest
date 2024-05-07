@@ -63,8 +63,15 @@ public class SeriesController {
     }
 
     @GetMapping("/writer/{writer}")
-    public List<Series> getPublishedSeriesByWriter(@PathVariable String writer){
-        return seriesService.fetchByWriter(writer);
+    public List<Series> getPublishedSeriesByWriter(@RequestParam(defaultValue = "0") int page,
+                                                   @PathVariable String writer){
+        try{
+            Pageable paging = PageRequest.of(page, 10);
+            Page<Series> pageSeries = seriesService.fetchByWriter(paging, writer);
+            return pageSeries.getContent();
+        } catch (Exception e){
+            return null;
+        }
     }
 
     @GetMapping("/tag/{tag}")
