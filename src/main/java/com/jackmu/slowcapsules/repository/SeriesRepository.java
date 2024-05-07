@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//TODO: Use page instead of list
-
 @Repository
 public interface SeriesRepository extends JpaRepository<Series, Long> {
     Page<Series> findByPublishedIsTrueOrderByDatetimeDesc(Pageable pageable);

@@ -6,8 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-//TODO: Use page instead of list
-
 public interface SeriesService {
     Series saveSeries(Series series);
 
