@@ -2,8 +2,12 @@ package com.jackmu.slowcapsules.controller;
 
 import com.jackmu.slowcapsules.jwt.JwtTokenProvider;
 import com.jackmu.slowcapsules.model.Entry;
+import com.jackmu.slowcapsules.model.Series;
 import com.jackmu.slowcapsules.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,8 +53,11 @@ public class EntryController {
     }
 
     @GetMapping("/getBySeries/{id}")
-    public List<Entry> getBySeriesId(@PathVariable Long id){
-        return entryService.fetchEntriesBySeriesId(id);
+    public List<Entry> getBySeriesId(@RequestParam(defaultValue = "0") int page,
+                                     @PathVariable Long id){
+        Pageable paging = PageRequest.of(page, 2);
+        Page<Entry> pageSeries = entryService.fetchEntriesBySeriesId(paging, id);
+        return pageSeries.getContent();
     }
 
     @GetMapping("/getFirstBySeries/{id}")
