@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,7 +56,7 @@ public class EntryController {
     @GetMapping("/getBySeries/{id}")
     public List<Entry> getBySeriesId(@RequestParam(defaultValue = "0") int page,
                                      @PathVariable Long id){
-        Pageable paging = PageRequest.of(page, 2);
+        Pageable paging = PageRequest.of(page, 10, Sort.by("orderNum").ascending());
         Page<Entry> pageSeries = entryService.fetchEntriesBySeriesId(paging, id);
         return pageSeries.getContent();
     }
