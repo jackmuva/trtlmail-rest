@@ -44,7 +44,7 @@ public class SeriesController {
     @DeleteMapping("/delete/{seriesId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity deleteSeries(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long seriesId){
-        if(seriesService.fetchBySeriesId(seriesId).get(0).getEmail().equals(userDetails.getUsername())){
+        if(seriesService.fetchBySeriesId(seriesId).getEmail().equals(userDetails.getUsername())){
             seriesService.deleteSeries(seriesId);
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -63,8 +63,11 @@ public class SeriesController {
     }
 
     @GetMapping("/writer/{writer}")
-    public List<Series> getPublishedSeriesByWriter(@PathVariable String writer){
-        return seriesService.fetchByWriter(writer);
+    public List<Series> getPublishedSeriesByWriter(@RequestParam(defaultValue = "0") int page,
+                                                   @PathVariable String writer){
+        Pageable paging = PageRequest.of(page, 1);
+        Page<Series> pageSeries = seriesService.fetchByWriter(paging, writer);
+        return pageSeries.getContent();
     }
 
     @GetMapping("/tag/{tag}")
@@ -84,7 +87,7 @@ public class SeriesController {
     }
 
     @GetMapping("/{id}")
-    public List<Series> getSeriesById(@PathVariable Long id){
+    public Series getSeriesById(@PathVariable Long id){
         return seriesService.fetchBySeriesId(id);
     }
 

@@ -5,6 +5,8 @@ import com.jackmu.slowcapsules.model.Entry;
 import com.jackmu.slowcapsules.repository.EntryRepository;
 import com.jackmu.slowcapsules.repository.ImageLookupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,8 +40,8 @@ public class EntryServiceImpl implements EntryService{
         entryRepository.deleteByEntryId(id);
     }
 
-    public List<Entry> fetchEntriesBySeriesId(Long id){
-        return entryRepository.findAllBySeriesId(id);
+    public Page<Entry> fetchEntriesBySeriesId(Pageable pageable, Long id){
+        return entryRepository.findAllBySeriesId(pageable, id);
     }
     public List<Entry> fetchEntriesByEntryId(Long id){
         return entryRepository.findByEntryId(id);
@@ -58,7 +60,7 @@ public class EntryServiceImpl implements EntryService{
     }
 
     protected void pushBackOtherEntryOrders(Entry entry, Integer newOrderNum, Integer oldOrderNum){
-        List<Entry> allEntries = fetchEntriesBySeriesId(entry.getSeriesId());
+        List<Entry> allEntries = entryRepository.findAllBySeriesId(entry.getSeriesId());
         for(Entry ent:allEntries){
             if(ent.getOrderNum() >= newOrderNum && ent.getOrderNum() <= oldOrderNum){
                 ent.setOrderNum(ent.getOrderNum() + 1);
@@ -68,7 +70,7 @@ public class EntryServiceImpl implements EntryService{
     }
 
     protected void moveUpOtherEntryOrders(Entry entry, Integer newOrderNum, Integer oldOrderNum){
-        List<Entry> allEntries = fetchEntriesBySeriesId(entry.getSeriesId());
+        List<Entry> allEntries = entryRepository.findAllBySeriesId(entry.getSeriesId());
 
         for(Entry ent:allEntries){
             if(ent.getOrderNum() <= newOrderNum && ent.getOrderNum() >= oldOrderNum){
@@ -79,7 +81,7 @@ public class EntryServiceImpl implements EntryService{
     }
 
     protected void moveUpOtherEntryOrders(Entry entry){
-        List<Entry> allEntries = fetchEntriesBySeriesId(entry.getSeriesId());
+        List<Entry> allEntries = entryRepository.findAllBySeriesId(entry.getSeriesId());
 
         for(Entry ent:allEntries){
             if(ent.getOrderNum() > entry.getOrderNum()){

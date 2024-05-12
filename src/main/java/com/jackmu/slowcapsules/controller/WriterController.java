@@ -41,7 +41,7 @@ public class WriterController {
     }
 
     @GetMapping("/get/{penName}")
-    public List<Writer> getWriter(@PathVariable String penName){
+    public Writer getWriter(@PathVariable String penName){
         return writerService.fetchWriterByPenName(penName);
     }
 
