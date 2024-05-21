@@ -44,7 +44,7 @@ public class SeriesController {
     @DeleteMapping("/delete/{seriesId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity deleteSeries(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long seriesId){
-        if(seriesService.fetchBySeriesId(seriesId).get(0).getEmail().equals(userDetails.getUsername())){
+        if(seriesService.fetchBySeriesId(seriesId).getEmail().equals(userDetails.getUsername())){
             seriesService.deleteSeries(seriesId);
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -87,7 +87,7 @@ public class SeriesController {
     }
 
     @GetMapping("/{id}")
-    public List<Series> getSeriesById(@PathVariable Long id){
+    public Series getSeriesById(@PathVariable Long id){
         return seriesService.fetchBySeriesId(id);
     }
 

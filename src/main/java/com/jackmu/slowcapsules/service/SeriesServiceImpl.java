@@ -51,7 +51,7 @@ public class SeriesServiceImpl implements SeriesService{
         return seriesRepository.findAllByKeyword(pageable, keyword, keyword, keyword, keyword, published);
     }
 
-    public List<Series> fetchBySeriesId(Long id){
+    public Series fetchBySeriesId(Long id){
         return seriesRepository.findBySeriesId(id);
     }
 

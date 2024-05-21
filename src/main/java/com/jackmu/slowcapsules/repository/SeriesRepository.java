@@ -28,5 +28,5 @@ public interface SeriesRepository extends JpaRepository<Series, Long> {
             @Param("title") String title,
             @Param("published") Boolean published
     );
-    List<Series> findBySeriesId(Long id);
+    Series findBySeriesId(Long id);
 }
