@@ -14,7 +14,7 @@ public interface SeriesService {
     Page<Series> fetchNewest(Pageable pageable);
 
     Page<Series> fetchByWriter(Pageable pageable, String writer);
-
+    Page<Series> fetchPublishedByWriter(Pageable pageable, String writer);
     List<Series> fetchByTag(String tag);
 
     Page<Series> fetchByKeyword(Pageable pageable, String keyword, Boolean published);

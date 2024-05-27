@@ -43,6 +43,10 @@ public class SeriesServiceImpl implements SeriesService{
         return seriesRepository.findByPenNameIgnoreCase(pageable, penName);
     }
 
+    public Page<Series> fetchPublishedByWriter(Pageable pageable, String penName){
+        return seriesRepository.findByPenNameIgnoreCaseAndPublishedIsTrue(pageable, penName);
+    }
+
     public List<Series> fetchByTag(String tag){
         return seriesRepository.findAllByTagsIsContainingIgnoreCaseAndPublishedIsTrue(tag);
     }
