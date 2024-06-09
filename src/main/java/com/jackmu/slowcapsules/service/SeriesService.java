@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface SeriesService {
     Series saveSeries(Series series);
-
     void deleteSeries(Long id);
-
+    void incrementReadersForSeries(Long id);
     Page<Series> fetchNewest(Pageable pageable);
 
     Page<Series> fetchByWriter(Pageable pageable, String writer);

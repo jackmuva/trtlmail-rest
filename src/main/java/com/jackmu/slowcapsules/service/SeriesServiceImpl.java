@@ -16,10 +16,8 @@ import java.util.List;
 public class SeriesServiceImpl implements SeriesService{
     @Autowired
     private SeriesRepository seriesRepository;
-
     @Autowired
     private EntryRepository entryRepository;
-
     @Autowired
     private ImageService imageService;
 
@@ -33,6 +31,11 @@ public class SeriesServiceImpl implements SeriesService{
         }
         entryRepository.deleteBySeriesId(id);
         seriesRepository.deleteById(id);
+    }
+
+    @Override
+    public void incrementReadersForSeries(Long id) {
+        seriesRepository.incrementReaders(id);
     }
 
     public Page<Series> fetchNewest(Pageable pageable){

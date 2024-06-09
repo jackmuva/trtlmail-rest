@@ -4,9 +4,11 @@ import com.jackmu.slowcapsules.model.Series;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,4 +31,12 @@ public interface SeriesRepository extends JpaRepository<Series, Long> {
             @Param("published") Boolean published
     );
     Series findBySeriesId(Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE series " +
+            "SET num_all_time_readers = num_all_time_readers + 1, num_current_readers = num_current_readers + 1 " +
+            "WHERE series_id = :seriesId",
+    nativeQuery = true)
+    void incrementReaders(Long seriesId);
 }
