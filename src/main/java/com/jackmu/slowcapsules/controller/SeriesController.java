@@ -46,7 +46,6 @@ public class SeriesController {
 
     @PutMapping("/increment/{seriesId}")
     public void incrementReadersForSeries(@PathVariable Long seriesId){
-        LOGGER.info("I'm here with " + seriesId);
         seriesService.incrementReadersForSeries(seriesId);
     }
 
