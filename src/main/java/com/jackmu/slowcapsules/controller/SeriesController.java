@@ -1,7 +1,10 @@
 package com.jackmu.slowcapsules.controller;
 
 import com.jackmu.slowcapsules.model.Series;
+import com.jackmu.slowcapsules.service.LocalImageService;
 import com.jackmu.slowcapsules.service.SeriesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,7 @@ import java.util.List;
 public class SeriesController {
     @Autowired
     private SeriesService seriesService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SeriesController.class);
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/new")
@@ -39,6 +42,11 @@ public class SeriesController {
             return new ResponseEntity(seriesService.saveSeries(series), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/increment/{seriesId}")
+    public void incrementReadersForSeries(@PathVariable Long seriesId){
+        seriesService.incrementReadersForSeries(seriesId);
     }
 
     @DeleteMapping("/delete/{seriesId}")

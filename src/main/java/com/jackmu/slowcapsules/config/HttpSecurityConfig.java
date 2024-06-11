@@ -56,6 +56,7 @@ public class HttpSecurityConfig {
                                 .requestMatchers("/api/writer/new").permitAll()
                                 .requestMatchers("/api/subscription/new").permitAll()
                                 .requestMatchers("/api/subscription/cancelSubscription/**").permitAll()
+                                .requestMatchers("/api/series/increment/**").permitAll()
                                 .anyRequest().authenticated()
                 ).exceptionHandling( exception -> exception
                     .authenticationEntryPoint(jwtAuthenticationEntryPoint)
