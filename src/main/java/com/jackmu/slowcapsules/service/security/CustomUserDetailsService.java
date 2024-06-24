@@ -1,7 +1,6 @@
 package com.jackmu.slowcapsules.service.security;
 
 import com.jackmu.slowcapsules.model.security.User;
-import com.jackmu.slowcapsules.repository.security.PasswordResetTokenRepository;
 import com.jackmu.slowcapsules.repository.security.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
-    public CustomUserDetailsService(UserRepository userRepository, PasswordResetTokenRepository passwordResetTokenRepository){
+    public CustomUserDetailsService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 

@@ -1,14 +1,13 @@
 package com.jackmu.slowcapsules.controller.security;
 
-import com.jackmu.slowcapsules.controller.WriterController;
 import com.jackmu.slowcapsules.model.security.*;
 import com.jackmu.slowcapsules.service.security.AuthService;
-import com.jackmu.slowcapsules.service.security.CustomUserDetailsService;
+import com.jackmu.slowcapsules.service.security.EmailService;
 import com.jackmu.slowcapsules.service.security.PasswordResetService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,10 +19,13 @@ import java.util.logging.Logger;
 public class AuthController {
     private AuthService authService;
     private PasswordResetService passwordResetService;
+    private EmailService emailService;
     private static final Logger LOGGER = Logger.getLogger(AuthController.class.getName());
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, PasswordResetService passwordResetService, EmailService emailService) {
         this.authService = authService;
+        this.passwordResetService = passwordResetService;
+        this.emailService = emailService;
     }
 
     @PostMapping(value = {"/login", "/signin"})
@@ -42,15 +44,15 @@ public class AuthController {
     }
 
     @PostMapping(value = {"/resetPassword"})
-    public ResponseEntity<String> resetPassword(@RequestParam("email") String userEmail) throws Exception {
+    public ResponseEntity<String> resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) throws Exception {
         User user = passwordResetService.loadUserByEmail(userEmail);
         if (user == null) {
             throw new Exception();
         }
         String token = UUID.randomUUID().toString();
+        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         passwordResetService.createPasswordResetTokenForUser(user, token);
-//        mailSender.send(constructResetTokenEmail(getAppUrl(request),
-//                request.getLocale(), token, user));
+        emailService.sendResetTokenEmail(appUrl, token, user);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
