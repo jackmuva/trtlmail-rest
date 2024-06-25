@@ -2,7 +2,6 @@ package com.jackmu.slowcapsules.service.security;
 
 import com.jackmu.slowcapsules.model.security.User;
 import com.jackmu.slowcapsules.repository.security.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
