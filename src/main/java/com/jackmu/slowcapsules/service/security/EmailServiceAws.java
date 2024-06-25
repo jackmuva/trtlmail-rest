@@ -4,6 +4,7 @@ import com.jackmu.slowcapsules.model.security.User;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,14 +18,17 @@ import java.util.logging.Logger;
 public class EmailServiceAws implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
-    private static final String PASSWORD_RESET_ENDPOINT = "/user/changePassword?token=";
+
+//    private static String PASSWORD_RESET_ENDPOINT = "https://trtlpost.com/changePassword?token=";
+    private static String PASSWORD_RESET_ENDPOINT = "http://localhost:3000/changePassword?token=";
     private static final Logger LOGGER = Logger.getLogger(EmailServiceAws.class.getName());
 
     @Override
-    public void sendResetTokenEmail(String uri, String token, User user) {
+    public void sendResetTokenEmail(String token, User user) {
         LOGGER.info("token: " + token + " for user: " + user.getEmail());
 
-        constructEmail(uri + PASSWORD_RESET_ENDPOINT + token, user);
+        mailSender.send(constructEmail(PASSWORD_RESET_ENDPOINT + token, user));
+
     }
 
     @Override
@@ -36,11 +40,11 @@ public class EmailServiceAws implements EmailService {
             helper.setFrom("trtlpost@trtlpost.com", "Trtlpost");
             helper.setSubject("TrtlPost Account Password Recovery");
             helper.setText("<a href = \"" + body + "\">" + body + "</a>", true);
+            return message;
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 }

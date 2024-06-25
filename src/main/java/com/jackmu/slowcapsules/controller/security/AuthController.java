@@ -1,5 +1,6 @@
 package com.jackmu.slowcapsules.controller.security;
 
+import com.jackmu.slowcapsules.util.GenericHttpResponse;
 import com.jackmu.slowcapsules.model.security.*;
 import com.jackmu.slowcapsules.service.security.AuthService;
 import com.jackmu.slowcapsules.service.security.EmailService;
@@ -50,19 +51,18 @@ public class AuthController {
             throw new Exception();
         }
         String token = UUID.randomUUID().toString();
-        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         passwordResetService.createPasswordResetTokenForUser(user, token);
-        emailService.sendResetTokenEmail(appUrl, token, user);
+        emailService.sendResetTokenEmail(token, user);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
-    @GetMapping("/user/changePassword")
-    public String showChangePasswordPage(@RequestParam("token") String token) {
+    @GetMapping("/changePassword")
+    public GenericHttpResponse showChangePasswordPage(@RequestParam("token") String token) {
         String result = passwordResetService.validatePasswordResetToken(token);
         if(result != null) {
-            return result;
+            return new GenericHttpResponse(HttpStatus.NOT_ACCEPTABLE.value(), "expired or invalid token");
         } else {
-            return "passwordReset";
+            return new GenericHttpResponse(HttpStatus.OK.value(), "Redirecting to password reset");
         }
     }
 
