@@ -18,17 +18,14 @@ import java.util.logging.Logger;
 public class EmailServiceAws implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
-
-    private static String PASSWORD_RESET_ENDPOINT = "https://trtlpost.com/changePassword/";
-    private static final Logger LOGGER = Logger.getLogger(EmailServiceAws.class.getName());
+    private static final String PASSWORD_RESET_ENDPOINT = "https://trtlpost.com/changePassword/";
 
     @Override
-    public void sendResetTokenEmail(String token, User user) {
+    public void sendResetToken(String token, User user) {
         mailSender.send(constructEmail(PASSWORD_RESET_ENDPOINT + token, user));
     }
 
-    @Override
-    public MimeMessage constructEmail(String body, User user) {
+    private MimeMessage constructEmail(String body, User user) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);

@@ -51,7 +51,7 @@ public class AuthController {
         }
         String token = UUID.randomUUID().toString();
         passwordResetService.createPasswordResetTokenForUser(user, token);
-        emailService.sendResetTokenEmail(token, user);
+        emailService.sendResetToken(token, user);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
