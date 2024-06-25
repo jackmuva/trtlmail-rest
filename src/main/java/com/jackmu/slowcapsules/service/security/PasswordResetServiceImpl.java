@@ -61,7 +61,7 @@ public class PasswordResetServiceImpl implements PasswordResetService{
         return Optional.ofNullable(passwordResetTokenRepository.findByToken(token) .getUser());
     }
 
-    @Scheduled(cron = "0 1 1 * * ?", zone = "UTC")
+    @Scheduled(cron = "0 1 1 * * ?")
     public void cleanTokenRepository(){
         passwordResetTokenRepository.deleteAllExpired();
     }
