@@ -5,12 +5,15 @@ import com.jackmu.slowcapsules.model.security.User;
 import com.jackmu.slowcapsules.repository.security.PasswordResetTokenRepository;
 import com.jackmu.slowcapsules.repository.security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -56,5 +59,10 @@ public class PasswordResetServiceImpl implements PasswordResetService{
     @Override
     public Optional<User> getUserByPasswordResetToken(String token) {
         return Optional.ofNullable(passwordResetTokenRepository.findByToken(token) .getUser());
+    }
+
+    @Scheduled(cron = "0 1 1 * * ?", zone = "UTC")
+    public void cleanTokenRepository(){
+        passwordResetTokenRepository.deleteAllExpired();
     }
 }
