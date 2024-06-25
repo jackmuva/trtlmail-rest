@@ -34,8 +34,8 @@ public class PasswordResetServiceImpl implements PasswordResetService{
     public String validatePasswordResetToken(String token) {
         final PasswordResetToken passToken = passwordResetTokenRepository.findByToken(token);
 
-        return !isTokenFound(passToken) ? "invalidToken"
-                : isTokenExpired(passToken) ? "expired"
+        return !isTokenFound(passToken) ? "Token is invalid"
+                : isTokenExpired(passToken) ? "Token is expired"
                 : null;
     }
 

@@ -14,21 +14,17 @@ import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
 @Service
-//@Profile("!local-profile")
+@Profile("!local-profile")
 public class EmailServiceAws implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-//    private static String PASSWORD_RESET_ENDPOINT = "https://trtlpost.com/changePassword?token=";
-    private static String PASSWORD_RESET_ENDPOINT = "http://localhost:3000/changePassword?token=";
+    private static String PASSWORD_RESET_ENDPOINT = "https://trtlpost.com/changePassword/";
     private static final Logger LOGGER = Logger.getLogger(EmailServiceAws.class.getName());
 
     @Override
     public void sendResetTokenEmail(String token, User user) {
-        LOGGER.info("token: " + token + " for user: " + user.getEmail());
-
         mailSender.send(constructEmail(PASSWORD_RESET_ENDPOINT + token, user));
-
     }
 
     @Override
@@ -41,9 +37,7 @@ public class EmailServiceAws implements EmailService {
             helper.setSubject("TrtlPost Account Password Recovery");
             helper.setText("<a href = \"" + body + "\">" + body + "</a>", true);
             return message;
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }
