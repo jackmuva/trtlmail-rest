@@ -1,7 +1,6 @@
 package com.jackmu.slowcapsules.model.security;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 

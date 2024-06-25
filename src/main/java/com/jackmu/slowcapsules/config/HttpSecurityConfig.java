@@ -51,12 +51,12 @@ public class HttpSecurityConfig {
 //                .requiresChannel(channel ->
 //                        channel.anyRequest().requiresSecure())
                 .cors().configurationSource(corsConfigurationSource()).and().csrf().disable().authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/writer/new").permitAll()
-                                .requestMatchers("/api/subscription/new").permitAll()
-                                .requestMatchers("/api/subscription/cancelSubscription/**").permitAll()
-                                .requestMatchers("/api/series/increment/**").permitAll()
+                        authorize.antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                                .antMatchers("/api/auth/**").permitAll()
+                                .antMatchers("/api/writer/new").permitAll()
+                                .antMatchers("/api/subscription/new").permitAll()
+                                .antMatchers("/api/subscription/cancelSubscription/**").permitAll()
+                                .antMatchers("/api/series/increment/**").permitAll()
                                 .anyRequest().authenticated()
                 ).exceptionHandling( exception -> exception
                     .authenticationEntryPoint(jwtAuthenticationEntryPoint)

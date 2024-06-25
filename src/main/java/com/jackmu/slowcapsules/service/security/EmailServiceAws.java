@@ -1,8 +1,8 @@
 package com.jackmu.slowcapsules.service.security;
 
 import com.jackmu.slowcapsules.model.security.User;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;

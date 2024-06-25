@@ -4,12 +4,12 @@ import com.jackmu.slowcapsules.model.security.*;
 import com.jackmu.slowcapsules.service.security.AuthService;
 import com.jackmu.slowcapsules.service.security.EmailService;
 import com.jackmu.slowcapsules.service.security.PasswordResetService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -54,6 +54,16 @@ public class AuthController {
         passwordResetService.createPasswordResetTokenForUser(user, token);
         emailService.sendResetTokenEmail(appUrl, token, user);
         return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
+    @GetMapping("/user/changePassword")
+    public String showChangePasswordPage(@RequestParam("token") String token) {
+        String result = passwordResetService.validatePasswordResetToken(token);
+        if(result != null) {
+            return result;
+        } else {
+            return "passwordReset";
+        }
     }
 
     @PostMapping("/user/savePassword")
