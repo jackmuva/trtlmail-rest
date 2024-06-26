@@ -47,7 +47,7 @@ public class EntryServiceImpl implements EntryService{
         return entryRepository.findByEntryId(id);
     }
 
-    public Entry fetchFirstEntryBySeriesId(Long id){ return entryRepository.findBySeriesIdAndOrderNum(id, 1L);}
+    public Entry fetchFirstEntryBySeriesId(Long id){ return entryRepository.findBySeriesIdAndOrderNum(id, 1);}
 
     protected void changeOtherEntryOrders(Entry entry){
         Integer oldOrderNum = fetchEntriesByEntryId(entry.getEntryId()).get(0).getOrderNum();
