@@ -19,10 +19,12 @@ public class StripeController {
     StripeService stripeService;
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/increaseReaderCount")
-    public GenericHttpResponse increaseReaderCount(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long seriesId){
+    public GenericHttpResponse increaseReaderCount(@AuthenticationPrincipal UserDetails userDetails
+//            , @PathVariable Long seriesId
+    ){
         try{
-            String returnUrl = stripeService.processPayment();
-            return new GenericHttpResponse(HttpStatus.SC_OK, returnUrl);
+            stripeService.processPayment();
+            return new GenericHttpResponse(HttpStatus.SC_OK, "Payment Successful");
         } catch(Exception e) {
             return new GenericHttpResponse(HttpStatus.SC_BAD_REQUEST, "Problem submitting payment");
         }

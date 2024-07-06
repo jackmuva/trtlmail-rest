@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import java.util.Map;
 
 @Configuration
-@Profile("!local-profile")
+//@Profile("!local-profile")
 public class StripeConfig {
     final Map<String, String> env = System.getenv();
     private String stripeApiKey;
