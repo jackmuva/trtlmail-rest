@@ -35,7 +35,7 @@ public class EntryController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/update")
     public ResponseEntity<Entry> putEntry(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Entry entry){
-        if(entry.getEmail().equals(userDetails.getUsername())) {
+        if(entryService.fetchEntriesByEntryId(entry.getEntryId()).get(0).getEmail().equals(userDetails.getUsername())){
             return new ResponseEntity<>(entryService.updateEntry(entry), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

@@ -1,8 +1,8 @@
 package com.jackmu.slowcapsules.controller;
 
 import com.jackmu.slowcapsules.model.Series;
-import com.jackmu.slowcapsules.service.LocalImageService;
 import com.jackmu.slowcapsules.service.SeriesService;
+import com.jackmu.slowcapsules.util.GenericHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,9 @@ public class SeriesController {
     @PostMapping("/new")
     public ResponseEntity postSeries(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Series series){
         if(series.getEmail().equals(userDetails.getUsername())){
+            series.setNumAllTimeReaders(0);
+            series.setNumCurrentReaders(0);
+            series.setMaxCurrentReaders(10);
             seriesService.saveSeries(series);
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -37,16 +40,19 @@ public class SeriesController {
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/update")
-    public ResponseEntity<Series> putSeries(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Series series){
-        if(series.getEmail().equals(userDetails.getUsername())){
-            return new ResponseEntity(seriesService.saveSeries(series), HttpStatus.OK);
+    public GenericHttpResponse putSeries(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Series series){
+        Series originalSeries = seriesService.fetchBySeriesId(series.getSeriesId());
+        if(originalSeries.getEmail().equals(userDetails.getUsername())){
+            if(series.getNumAllTimeReaders() != originalSeries.getNumAllTimeReaders() ||
+                    series.getNumCurrentReaders() != originalSeries.getNumCurrentReaders() ||
+                    series.getMaxCurrentReaders() != originalSeries.getMaxCurrentReaders()){
+                return new GenericHttpResponse(HttpStatus.UNAUTHORIZED.value(), "Cannot update reader counts");
+            } else {
+                return new GenericHttpResponse(HttpStatus.OK.value(), "Series successfully updated");
+            }
+        } else {
+            return new GenericHttpResponse(HttpStatus.BAD_REQUEST.value(), "User Unauthorized");
         }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-    }
-
-    @PutMapping("/increment/{seriesId}")
-    public void incrementReadersForSeries(@PathVariable Long seriesId){
-        seriesService.incrementReadersForSeries(seriesId);
     }
 
     @DeleteMapping("/delete/{seriesId}")

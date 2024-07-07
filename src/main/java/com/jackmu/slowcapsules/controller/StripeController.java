@@ -1,5 +1,6 @@
 package com.jackmu.slowcapsules.controller;
 
+import com.jackmu.slowcapsules.model.Series;
 import com.jackmu.slowcapsules.service.StripeService;
 import com.jackmu.slowcapsules.util.GenericHttpResponse;
 import com.stripe.exception.StripeException;
@@ -21,8 +22,8 @@ public class StripeController {
     public GenericHttpResponse checkStripeSessionStatue(@AuthenticationPrincipal UserDetails userDetails,
                                                         @RequestParam String checkout_session_id){
         try{
-            Boolean isPaid = stripeService.sessionPaid(checkout_session_id);
-            if(isPaid){
+            Series series = stripeService.sessionPaid(checkout_session_id);
+            if(series.getMaxCurrentReaders().equals(Integer.MAX_VALUE)){
                 return new GenericHttpResponse(HttpStatus.SC_OK, "Purchase Successful!");
             } else{
                 return new GenericHttpResponse(HttpStatus.SC_OK, "Purchase was not made");
