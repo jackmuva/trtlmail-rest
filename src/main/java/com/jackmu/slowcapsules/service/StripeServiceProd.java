@@ -4,6 +4,7 @@ import com.jackmu.slowcapsules.config.StripeConfig;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.RequestOptions;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,15 @@ public class StripeServiceProd implements  StripeService{
     public Boolean sessionPaid(String sessionId) throws StripeException {
         LOGGER.info(sessionId);
         LOGGER.info(stripeConfig.getStripeApiKey());
+        LOGGER.info(stripeConfig.getStripeAccountId());
         Stripe.apiKey = stripeConfig.getStripeApiKey();
-        Session session = Session.retrieve(sessionId);
+
+        RequestOptions requestOptions = RequestOptions.builder()
+                .setStripeAccount(stripeConfig.getStripeAccountId())
+                .setApiKey(stripeConfig.getStripeApiKey())
+                .build();
+
+        Session session = Session.retrieve(sessionId, requestOptions);
         LOGGER.info(session.getClientReferenceId());
         LOGGER.info(session.getStatus());
         LOGGER.info(session.getCustomer());
