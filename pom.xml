@@ -111,12 +111,6 @@
 			<artifactId>stripe-java</artifactId>
 			<version>26.1.0</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.sparkjava</groupId>
-			<artifactId>spark-core</artifactId>
-			<version>2.5.4</version>
-		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

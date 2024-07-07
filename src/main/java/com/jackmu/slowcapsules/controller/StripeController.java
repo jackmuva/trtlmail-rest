@@ -2,31 +2,34 @@ package com.jackmu.slowcapsules.controller;
 
 import com.jackmu.slowcapsules.service.StripeService;
 import com.jackmu.slowcapsules.util.GenericHttpResponse;
+import com.stripe.exception.StripeException;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/payments")
 public class StripeController {
     @Autowired
     StripeService stripeService;
+
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/increaseReaderCount")
-    public GenericHttpResponse increaseReaderCount(@AuthenticationPrincipal UserDetails userDetails
-//            , @PathVariable Long seriesId
-    ){
+    @PostMapping("/checkStatus")
+    public GenericHttpResponse checkStripeSessionStatue(@AuthenticationPrincipal UserDetails userDetails,
+                                                        @RequestParam String checkout_session_id){
         try{
-            stripeService.processPayment();
-            return new GenericHttpResponse(HttpStatus.SC_OK, "Payment Successful");
-        } catch(Exception e) {
-            return new GenericHttpResponse(HttpStatus.SC_BAD_REQUEST, "Problem submitting payment");
+            Boolean isPaid = stripeService.sessionPaid(checkout_session_id);
+            if(isPaid){
+                return new GenericHttpResponse(HttpStatus.SC_OK, "Purchase Successful!");
+            } else{
+                return new GenericHttpResponse(HttpStatus.SC_OK, "Purchase was not made");
+            }
+        } catch (StripeException e) {
+            return new GenericHttpResponse(HttpStatus.SC_NOT_ACCEPTABLE, e.getMessage());
         }
     }
+
 }

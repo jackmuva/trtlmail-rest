@@ -1,5 +1,7 @@
 package com.jackmu.slowcapsules.service;
 
+import com.stripe.exception.StripeException;
+
 public interface StripeService {
-    void processPayment();
+    Boolean sessionPaid(String sessionId) throws StripeException;
 }
