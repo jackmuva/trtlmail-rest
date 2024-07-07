@@ -20,20 +20,12 @@ public class StripeServiceProd implements  StripeService{
 
     @Override
     public Boolean sessionPaid(String sessionId) throws StripeException {
-        LOGGER.info(sessionId);
-        LOGGER.info(stripeConfig.getStripeApiKey());
-        LOGGER.info(stripeConfig.getStripeAccountId());
+
         Stripe.apiKey = stripeConfig.getStripeApiKey();
 
-        RequestOptions requestOptions = RequestOptions.builder()
-                .setStripeAccount(stripeConfig.getStripeAccountId())
-                .setApiKey(stripeConfig.getStripeApiKey())
-                .build();
-
-        Session session = Session.retrieve(sessionId, requestOptions);
+        Session session = Session.retrieve(sessionId);
         LOGGER.info(session.getClientReferenceId());
         LOGGER.info(session.getStatus());
-        LOGGER.info(session.getCustomer());
         return Boolean.TRUE;
     }
 }

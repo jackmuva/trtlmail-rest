@@ -11,24 +11,18 @@ import java.util.Map;
 public class StripeConfig {
     final Map<String, String> env = System.getenv();
     private String stripeApiKey;
-    private String stripeAccountId;
 
     @Bean
     public StripeConfig getStripeConfig(){
         setStripeApiKey();
-        setStripeAccountId();
         return this;
     }
 
     public void setStripeApiKey(){
         stripeApiKey = env.get("stripe_api_key");
     }
-    public void setStripeAccountId(){
-        stripeAccountId = env.get("stripe_acct_id");
-    }
 
     public String getStripeApiKey(){
         return stripeApiKey;
     }
-    public String getStripeAccountId(){ return stripeAccountId; }
 }
