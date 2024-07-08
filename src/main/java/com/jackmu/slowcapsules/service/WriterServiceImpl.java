@@ -12,8 +12,13 @@ public class WriterServiceImpl implements WriterService{
     @Autowired
     private WriterRepository writerRepository;
 
-    public Writer saveWriter(Writer writer){
-        return writerRepository.save(writer);
+    public Boolean createWriter(Writer writer){
+        if(writerRepository.findByPenName(writer.getPenName()) != null){
+            writerRepository.save(writer);
+            return Boolean.TRUE;
+        } else{
+            return Boolean.FALSE;
+        }
     }
 
     public void deleteWriter(Long id){

@@ -3,6 +3,7 @@ package com.jackmu.slowcapsules.controller;
 import com.jackmu.slowcapsules.jwt.JwtTokenProvider;
 import com.jackmu.slowcapsules.model.Writer;
 import com.jackmu.slowcapsules.service.WriterService;
+import com.jackmu.slowcapsules.util.GenericHttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,13 @@ public class WriterController {
     private static final Logger LOGGER = Logger.getLogger(WriterController.class.getName());
 
     @PostMapping("/new")
-    public Writer postWriter(@RequestBody Writer writer){
-        return writerService.saveWriter(writer);
+    public GenericHttpResponse postWriter(@RequestBody Writer writer){
+        Boolean writerCreated = writerService.createWriter(writer);
+        if(writerCreated){
+            return new GenericHttpResponse(HttpStatus.OK.value(), "Writer successfully created");
+        } else{
+            return new GenericHttpResponse(HttpStatus.NOT_ACCEPTABLE.value(), "PenName already taken");
+        }
     }
 
     @PreAuthorize("hasRole('USER')")

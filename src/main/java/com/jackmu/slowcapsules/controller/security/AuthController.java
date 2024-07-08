@@ -44,7 +44,7 @@ public class AuthController {
     }
 
     @PostMapping(value = {"/resetPassword"})
-    public ResponseEntity<String> resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) throws Exception {
+    public ResponseEntity<String> resetPassword(@RequestParam("email") String userEmail) throws Exception {
         User user = passwordResetService.loadUserByEmail(userEmail);
         if (user == null) {
             throw new Exception();
