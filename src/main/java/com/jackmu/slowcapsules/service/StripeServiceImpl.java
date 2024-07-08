@@ -24,9 +24,7 @@ public class StripeServiceImpl implements  StripeService{
         Stripe.apiKey = stripeConfig.getStripeApiKey();
         Session session = Session.retrieve(sessionId);
 
-        LOGGER.info(session.getClientReferenceId());
         Series series = seriesRepository.findBySeriesId(Long.valueOf(session.getClientReferenceId()));
-        LOGGER.info(session.getStatus());
         if(session.getStatus().equals("complete")){
             series.setMaxCurrentReaders(Integer.MAX_VALUE);
             seriesRepository.save(series);
