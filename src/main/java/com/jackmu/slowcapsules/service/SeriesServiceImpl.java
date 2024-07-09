@@ -43,7 +43,7 @@ public class SeriesServiceImpl implements SeriesService{
     }
 
     public Page<Series> fetchByWriter(Pageable pageable, String penName){
-        return seriesRepository.findByPenNameIgnoreCase(pageable, penName);
+        return seriesRepository.findByPenNameIgnoreCaseOrderByDatetimeDesc(pageable, penName);
     }
 
     public Page<Series> fetchPublishedByWriter(Pageable pageable, String penName){

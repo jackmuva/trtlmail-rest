@@ -16,7 +16,7 @@ import java.util.List;
 public interface SeriesRepository extends JpaRepository<Series, Long> {
     Page<Series> findByPublishedIsTrueOrderByDatetimeDesc(Pageable pageable);
     Page<Series> findByPenNameIgnoreCaseAndPublishedIsTrue(Pageable pageable, String penName);
-    Page<Series> findByPenNameIgnoreCase(Pageable pageable, String penName);
+    Page<Series> findByPenNameIgnoreCaseOrderByDatetimeDesc(Pageable pageable, String penName);
     List<Series> findAllByTagsIsContainingIgnoreCaseAndPublishedIsTrue(String tag);
     @Query(value = "SELECT * FROM Series WHERE (POSITION(LOWER(:penName) in LOWER(pen_name)) > 0 " +
             "OR POSITION(LOWER(:tag) in LOWER(tags)) > 0 OR POSITION(LOWER(:summary) in LOWER(summary)) > 0 " +
