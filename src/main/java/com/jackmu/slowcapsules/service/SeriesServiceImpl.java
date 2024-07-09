@@ -47,7 +47,7 @@ public class SeriesServiceImpl implements SeriesService{
     }
 
     public Page<Series> fetchPublishedByWriter(Pageable pageable, String penName){
-        return seriesRepository.findByPenNameIgnoreCaseAndPublishedIsTrue(pageable, penName);
+        return seriesRepository.findByPenNameIgnoreCaseAndPublishedIsTrueOrderByDatetimeDesc(pageable, penName);
     }
 
     public List<Series> fetchByTag(String tag){
