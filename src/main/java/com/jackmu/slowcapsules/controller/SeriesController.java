@@ -48,6 +48,7 @@ public class SeriesController {
                     series.getMaxCurrentReaders() != originalSeries.getMaxCurrentReaders()){
                 return new GenericHttpResponse(HttpStatus.UNAUTHORIZED.value(), "Cannot update reader counts");
             } else {
+                seriesService.saveSeries(series);
                 return new GenericHttpResponse(HttpStatus.OK.value(), "Series successfully updated");
             }
         } else {
